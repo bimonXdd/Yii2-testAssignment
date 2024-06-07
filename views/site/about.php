@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         This is the About page. You may modify the following file to customize its content:
+            <?= Yii::$app->getUser()->getId()?>
     </p>
 
     <code><?= __FILE__ ?></code>

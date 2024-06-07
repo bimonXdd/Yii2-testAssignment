@@ -13,6 +13,7 @@ use app\models\CommentForm;
 use app\models\Comment;
 use app\models\Post;
 use app\models\PostForm;
+use app\models\SignupForm;
 use app\models\User;
 use yii\data\Pagination;
 
@@ -135,17 +136,13 @@ class SiteController extends Controller
     public function actionPost(){
         $query = Post::find();
         $pagination = new Pagination([
-            'defaultPageSize' => 5,
+            'defaultPageSize' => 6,
             'totalCount' => $query->count(),
         ]);
         $posts = $query->orderBy('created_at')
         ->offset($pagination->offset)
         ->limit($pagination->limit)
-        ->all();
-
-        
-
-        
+        ->all(); 
 
         return $this->render('post',[
             'posts' => $posts,
@@ -176,6 +173,14 @@ class SiteController extends Controller
                 return $this->redirect(['post']); // Ensure the redirect target is correct
             } else {
                 return $this->render('newpost', ['postForm' => $postForm]);
+            }
+        }
+        public function actionSignup(){
+            $SignupForm = new SignupForm();
+            if ($SignupForm->load(Yii::$app->request->post()) && $SignupForm->signup()) {
+                return $this->redirect(['login','model'=> $SignupForm]);
+            }else{
+                return $this->render('signup', ['model'=>$SignupForm]);
             }
         }
 }
