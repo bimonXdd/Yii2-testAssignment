@@ -7,16 +7,17 @@ use yii\widgets\LinkPager;
 use yii\helpers\Url;
 
 ?>
-<h1>comments</h1>
+<h1><?= $post->title ?></h1>
 <div>
+<img src="fish.jpg" alt="Italian Trulli">
+<?= $post->body ?>
 <?php $form = ActiveForm::begin([
     'id' => 'comment-form',
     'action' => ['site/comments', 'post_id' => $post_id], // Adjusted action URL
     'method' => 'post',
 ]); ?>
-
 <?= $form->field($commentForm, 'post_id')->hiddenInput(['post_id' => $post_id])->label(false) ?>
-<?= $form->field($commentForm, 'body')->textarea(['rows' => 6]) ?>
+<?= $form->field($commentForm, 'body')->textarea(['rows' => 4]) ?>
 
 
 
@@ -30,10 +31,19 @@ use yii\helpers\Url;
 </div>
 
 
-<h2>Comments</h2>
+<h2>Previous comments</h2>
 <ul>
-<?php foreach ($post->comments as $commentItem): ?>
-    <p><?= Html::encode($commentItem->body) ?></p>
-<?php endforeach; ?>
+<?php 
+    if(count($post->comments) == 0): ?>
+    <h4>No comments at the moment</h4>
+
+    <?php
+        else:
+        foreach ($post->comments as $commentItem): ?>
+            <h4><?= Html::encode($commentItem->createdBy->username)?><h4>
+            <p><?= Html::encode($commentItem->body) ?></p>
+            <?php   endforeach;
+        endif;
+?>
 </ul>
 

@@ -12,6 +12,8 @@ use app\models\ContactForm;
 use app\models\CommentForm;
 use app\models\Comment;
 use app\models\Post;
+use app\models\PostForm;
+use app\models\User;
 use yii\data\Pagination;
 
 class SiteController extends Controller
@@ -129,16 +131,19 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
     public function actionPost(){
         $query = Post::find();
         $pagination = new Pagination([
             'defaultPageSize' => 5,
             'totalCount' => $query->count(),
         ]);
-        $posts = $query->orderBy('title')
+        $posts = $query->orderBy('created_at')
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
+
+        
 
         
 
@@ -150,23 +155,27 @@ class SiteController extends Controller
        
         public function actionComments($post_id){
             $post = Post::findOne($post_id);
-
-            
             $commentForm = new CommentForm($post->ID);
+
         
             if ($commentForm->load(Yii::$app->request->post()) && $commentForm->createComment()) {        
-                // Redirect to a separate action to display the post and its comments
-                return $this->redirect(['comments', 'post_id' => $post->ID]);
-            }else
-            
-            {return $this->render('comments', [
+                return $this->refresh();;
+            }
+            else{
+                return $this->render('comments', [
                 'post' => $post,
                 'commentForm' => $commentForm,
                 'post_id' => $post->ID
             ]);}
         
-            
+        }
+        public function actionNewpost(){
+            $postForm = new PostForm();
 
-    
+            if ($postForm->load(Yii::$app->request->post()) && $postForm->createPost()) {
+                return $this->redirect(['post']); // Ensure the redirect target is correct
+            } else {
+                return $this->render('newpost', ['postForm' => $postForm]);
+            }
         }
 }

@@ -12,6 +12,8 @@ use Yii;
  * @property string $body
  * @property string $created_at
  * @property int $post_id
+ * 
+ * @property User $createdBy
  *
  */
 class Comment extends \yii\db\ActiveRecord

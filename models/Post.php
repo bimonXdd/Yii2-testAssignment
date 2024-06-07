@@ -11,6 +11,8 @@ use Yii;
  * @property int $created_by
  * @property string $body
  * @property string $created_at
+ * @property string $image
+ * @property string $title
  *
  * @property Comment[] $comments
  * @property User $createdBy

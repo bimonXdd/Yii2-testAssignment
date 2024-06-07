@@ -5,21 +5,21 @@ use yii\helpers\Url;
 ?>
 <h1>Posts</h1>
 <ul>
+
 <?php foreach ($posts as $post): ?>
     <li>
-        <?= Html::encode("{$post->title} ({$post->created_by})") ?>:
-        <?= $post->body ?>
+    <div class="form-group">
+        <div>
+            <?=Html::a($post->title, Url::to(['site/comments', 'post_id' => $post->ID]), [
+                'class' => 'btn btn-primary',]); ?>
+        </div>
+    </div>
+        <?= Html::encode("{$post->createdBy->username}") ?>:
         <?= $post->created_at ?>
+        <?= $post->body ?>
 
 
-        <div class="form-group">
-                <div>
-                    <?=
-                    Html::a('Send Info', Url::to(['site/comments', 'post_id' => $post->ID]), [
-                            'class' => 'btn btn-primary',
-                            ]); ?>
-                </div>
-            </div>
+        
     
 <?php endforeach; ?>
 </ul>

@@ -19,17 +19,8 @@ class CommentForm extends Model
     public function rules()
     {
         return [
-            [['body', 'post_id'], 'required'],
             [['body'], 'string'],
             [['post_id'], 'integer'],
-        ];
-    }
-
-    public function attributeLabels()
-    {
-        return [
-            'body' => 'Comment',
-            'post_id' => 'Post ID',
         ];
     }
 
@@ -42,7 +33,6 @@ class CommentForm extends Model
         $comment->body = $this->body;
         $comment->created_at = date('Y-m-d H:i:s');
         $comment->post_id = $this->post_id;
-        $comment->save();
-        return true;
+        return $comment->save();;
     }
 }
