@@ -41,8 +41,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'New Post', 'url' => ['/site/newpost']],
             ['label' => 'blog', 'url' => ['/site/post']],
+            Yii::$app->user->getId() == 1 ? ['label' => 'Manage Users', 'url' => ['/management/usermanagement']] : '',
+            Yii::$app->user->getId() != 0 ? ['label' => 'New Post', 'url' => ['/site/newpost']] : '',
+
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']] 
                 : '<li class="nav-item">'
@@ -53,12 +55,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     )
                     . Html::endForm()
                     . '</li>',
-            //TODO
-            //Yii::$app->user->getId() == 1 ? ['label' => 'Manage Users', 'url' => ['/site/newpost']] : ['label' => '', 'url' => ['login']]
+            
+            
         ]
     ]);
     NavBar::end();
-    ?>
+    ?>  
 </header>
 
 <main id="main" class="flex-shrink-0" role="main">

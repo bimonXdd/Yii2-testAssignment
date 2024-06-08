@@ -1,5 +1,6 @@
 main > .container {
     padding: 70px 15px 20px;
+    
 }
 
 .footer {
@@ -86,3 +87,4 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+

@@ -17,7 +17,7 @@ use yii\helpers\Url;
     'method' => 'post',
 ]); ?>
 <?= $form->field($commentForm, 'post_id')->hiddenInput(['post_id' => $post_id])->label(false) ?>
-<?= $form->field($commentForm, 'body')->textarea(['rows' => 4]) ?>
+<?= $form->field($commentForm, 'body')->textarea(['rows' => 4])->label('Leave a comment:') ?>
 
 
 

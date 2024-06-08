@@ -10,11 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\CommentForm;
-use app\models\Comment;
 use app\models\Post;
 use app\models\PostForm;
 use app\models\SignupForm;
-use app\models\User;
 use yii\data\Pagination;
 
 class SiteController extends Controller
