@@ -14,6 +14,9 @@ use app\models\Post;
 use app\models\PostForm;
 use app\models\SignupForm;
 use yii\data\Pagination;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
+
 
 class SiteController extends Controller
 {
@@ -151,7 +154,11 @@ class SiteController extends Controller
         public function actionComments($post_id){
             $post = Post::findOne($post_id);
             $commentForm = new CommentForm($post->ID);
-
+            if($post->image != null){
+                $fileType = FileHelper::getMimeType($post->image);
+            }else{
+                $fileType = null;
+            }
         
             if ($commentForm->load(Yii::$app->request->post()) && $commentForm->createComment()) {        
                 return $this->refresh();;
@@ -160,19 +167,34 @@ class SiteController extends Controller
                 return $this->render('comments', [
                 'post' => $post,
                 'commentForm' => $commentForm,
-                'post_id' => $post->ID
+                'post_id' => $post->ID,
+                'fileType'=> $fileType,
             ]);}
         
         }
-        public function actionNewpost(){
-            $postForm = new PostForm();
 
-            if ($postForm->load(Yii::$app->request->post()) && $postForm->createPost()) {
-                return $this->redirect(['post']); // Ensure the redirect target is correct
-            } else {
-                return $this->render('newpost', ['postForm' => $postForm]);
+
+        public function actionNewpost()
+        {
+            $postForm = new PostForm();
+        
+            if ($postForm->load(Yii::$app->request->post())) {
+                $postForm->imageFile = UploadedFile::getInstance($postForm, 'imageFile');
+                // Try to create the post
+                if ($postForm->createPost()) {
+                    Yii::$app->session->setFlash('success', 'Post created successfully');
+                    return $this->redirect(['post']); // Ensure the redirect target is correct
+                } else {
+                    Yii::$app->session->setFlash('error', 'Failed to create post');
+                }
             }
+        
+            return $this->render('newpost', ['postForm' => $postForm]);
         }
+        
+
+
+
         public function actionSignup(){
             $SignupForm = new SignupForm();
             if ($SignupForm->load(Yii::$app->request->post()) && $SignupForm->signup()) {

@@ -43,22 +43,23 @@ class ManagementController extends Controller
 
         return $this->redirect(['usermanagement']);
     }
+    
     public function actionUpdate($id){
         $user = User::findOne($id);
         if ($user == null) {
             throw new NotFoundHttpException("The requested user does not exist.");
         }
+        else if ($user->load(Yii::$app->request->post())){
+            Yii::$app->db->createCommand()->update('user', [
+                'username' => $user->username,
+                'email' => 'updatedemail@example.com',
+            ], 'id = :id', [':id' => $id])->execute();
 
-        Yii::$app->db->createCommand()->update('user', [
-            'username' => 'updatedusername',
-            'email' => 'updatedemail@example.com',
-        ], 'id = :id', [':id' => $id])->execute();
-
-        
-        if ($user->load(Yii::$app->request->post()) && $user->save()) {
             Yii::$app->session->setFlash('success', 'User updated successfully.');
             return $this->redirect(['usermanagement']);
         }
+
+    
 
         return $this->render('update', [
             'model' => $user,

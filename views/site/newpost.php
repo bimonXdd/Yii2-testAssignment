@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($postForm, 'title')->textInput() ?>
         <?= $form->field($postForm, 'body')->textarea(['rows' => 6]) ?>
-
+        <?= $form->field($postForm, 'imageFile')->fileInput() ?>
+        <p>max img/video size: 40Mb</p>
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'newpost-button']) ?>
         </div>

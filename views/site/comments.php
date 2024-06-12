@@ -9,7 +9,30 @@ use yii\helpers\Url;
 ?>
 <h1><?= $post->title ?></h1>
 <div>
-<img src="fish.jpg" alt="Italian Trulli">
+
+<div>
+    <h3><?= Html::encode($post->image) ?></h3>
+    <?php
+    $webRoot = Yii::getAlias('@web');
+    $filePath = $webRoot . '/' . $post->image;
+    
+    if (in_array($fileType, ['image/jpeg', 'image/png'])) {
+        echo Html::img($filePath, ['alt' => '', 'class' => 'your-css-class']);
+    } else if ($fileType == 'video/mp4') {
+        echo Html::tag('video', Html::tag('source', '', [
+            'src' => $filePath,
+            'type' => 'video/mp4',
+        ]), [
+            'controls' => true,
+        ]);
+    } else {
+        echo '<p>The uploaded file is not a supported type.</p>';
+    }
+    ?>
+    <p>File uploaded to: <?= Html::encode($filePath) ?></p>
+</div>
+
+
 <?= $post->body ?>
 <?php $form = ActiveForm::begin([
     'id' => 'comment-form',
