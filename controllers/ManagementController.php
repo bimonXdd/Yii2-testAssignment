@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
+use app\models\Post;
+use app\models\Comment;
 
 
 class ManagementController extends Controller
@@ -33,9 +35,18 @@ class ManagementController extends Controller
     }
     public function actionDelete($id){
         $user = User::findOne($id);
-
         if ($user === null) {
             throw new NotFoundHttpException("The requested user does not exist.");
+        }
+
+        //delete all the users comments-posts 
+        $posts = Post::find()->where(['created_by'=>$id])->all();
+        foreach($posts as $post){
+            $comments = Comment::find()->where(['post_id'=> $post->ID])->all();
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+            $post->delete();
         }
 
         if ($user->delete()) {
@@ -50,28 +61,30 @@ class ManagementController extends Controller
     public function actionUpdate($id){
         $user = User::findOne($id);
         $updatedUser = new updateuserForm();
-        $isUpdateable = in_array($id, [0]) ? true : false;
-        
-        if ($user == null) {
+    
+        if ($user === null) {
             throw new NotFoundHttpException("The requested user does not exist.");
         }
-        else if($isUpdateable){
-            throw new ForbiddenHttpException("Cant edit guest profile");
+    
+        $isUpdateable = in_array($id, [0]) ? true : false;
+        if ($isUpdateable) {
+            throw new ForbiddenHttpException("Cannot edit guest profile.");
         }
-        else if ($updatedUser->load(Yii::$app->request->post()) and $isUpdateable){
+    
+        if ($updatedUser->load(Yii::$app->request->post()) && $updatedUser->validate()) {
             Yii::$app->db->createCommand()->update('user', [
                 'username' => $updatedUser->username,
                 'email' => $updatedUser->email,
             ], 'id = :id', [':id' => $id])->execute();
-
+    
             Yii::$app->session->setFlash('success', 'User updated successfully.');
             return $this->redirect(['usermanagement']);
-        }else{return $this->render('update', [
+        }
+    
+        return $this->render('update', [
             'updatedUser' => $updatedUser,
             'user' => $user,
-        ]);}
-
-        
+        ]);
     }
 
 }

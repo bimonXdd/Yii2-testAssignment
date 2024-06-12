@@ -8,7 +8,6 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 use app\models\CommentForm;
 use app\models\Post;
 use app\models\PostForm;
@@ -16,7 +15,7 @@ use app\models\SignupForm;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
-use yii\bootstrap\BootstrapAsset;
+use app\models\Comment;
 
 
 class SiteController extends Controller
@@ -147,7 +146,7 @@ class SiteController extends Controller
             }
         
             if ($commentForm->load(Yii::$app->request->post()) && $commentForm->createComment()) {        
-                return $this->refresh();;
+                return $this->refresh();
             }
             else{
                 return $this->render('comments', [
@@ -188,5 +187,39 @@ class SiteController extends Controller
             }else{
                 return $this->render('signup', ['model'=>$SignupForm]);
             }
+        }
+
+        public function actionDeletePost($id)
+        {
+            // Load the post model
+            $post = Post::findOne($id);
+    
+            // Check if the post exists
+            if ($post) {
+                // Delete the post AND comments
+                $comments = Comment::find()->where(['post_id'=> $post->ID])->all();
+                
+                foreach ($comments as $comment) {
+                    $comment->delete();
+                }
+
+                $post->delete();
+                Yii::$app->session->setFlash('success', 'Post deleted successfully.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Unable to delete post. Post not found.');
+            }
+            return $this->redirect(Yii::$app->request->referrer);
+    
+            
+        }
+        public function actionDeleteComment($id){
+            $comment = Comment::findOne($id);
+            if ($comment) {
+                $comment->delete();
+                Yii::$app->session->setFlash('success', 'Comment deleted successfully.');
+            }else {
+                Yii::$app->session->setFlash('error', 'Unable to delete post. Post not found.');
+            }
+            return $this->redirect(Yii::$app->request->referrer);
         }
 }

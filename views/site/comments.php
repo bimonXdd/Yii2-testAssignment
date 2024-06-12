@@ -1,15 +1,12 @@
 <?php
 
-use yii\bootstrap5\ActiveField;
+
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
-use yii\widgets\LinkPager;
-use yii\helpers\Url;
 
+$this->registerCssFile('@web/css/commentSection.css');
 ?>
-<?php
-    $this->registerCssFile('@web/css/commentSection.css');
-?>
+
 <h1 class="post-title"><?= $post->title ?></h1>
 <div>
 
@@ -28,9 +25,8 @@ use yii\helpers\Url;
             'controls' => true,
             'class' => 'image-video'
         ]);
-    } else {
-        echo '<p>The uploaded file is not a supported type.</p>';
     }
+     
     ?>
     
 </div>
@@ -60,16 +56,27 @@ use yii\helpers\Url;
 <ul>
 <?php 
     if(count($post->comments) == 0): ?>
-    <h4>No comments at the moment</h4>
-
+    <h4 class="comment">No comments at the moment</h4>
+    
     <?php
         else:
 
         foreach ($post->comments as $commentItem): ?>
-        <div class="comment">
-            <p><?= Html::encode($commentItem->createdBy->username)?><p>
-            <p><?= Html::encode($commentItem->body) ?></p>
+        <div class="comment-form">
+            <div class="comment">
+                <p class="created_by"><?= Html::encode($commentItem->createdBy->username)?><p>
+                <p><?= Html::encode($commentItem->body) ?></p>
+            </div>
+
+            <?php  
+            //if user is anadmin
+            if(Yii::$app->user->getId() == 1):  ?>    
+                <?= Html::beginForm(['site/delete-comment', 'id' => $commentItem->ID], 'post', ['class' => 'delete-form']) ?>
+                <?= Html::submitButton('Delete', ['class' => 'btn btn-danger', 'data-confirm' => 'Are you sure you want to delete this comment?']) ?>
+                <?= Html::endForm();
+            endif; ?>
         </div>
+        
         <?php   endforeach;
 
     endif;

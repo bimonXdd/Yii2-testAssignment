@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'post-form',
             'method' => 'post',
         ]); ?>
-
         <?= $form->field($postForm, 'title')->textInput() ?>
         <?= $form->field($postForm, 'body')->textarea(['rows' => 6]) ?>
         <?= $form->field($postForm, 'imageFile')->fileInput() ?>
@@ -28,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <?php ActiveForm::end(); ?>
+
 
             </div>
         </div>

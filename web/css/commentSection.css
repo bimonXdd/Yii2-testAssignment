@@ -21,6 +21,7 @@ body, h1, h2, h3, h4, p, ul, ol, li {
     background-color: #f9f9f9;
     border-radius: 8px;
     padding: 10px;
+    width: 100%;
     margin-bottom: 10px;
 }
 
@@ -28,6 +29,21 @@ body, h1, h2, h3, h4, p, ul, ol, li {
     margin-bottom: 5px;
 }
 
-.comment p:last-child {
-    margin-bottom: 0;
+.comment-form{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.created_by{
+    width: 100%;
+    padding: 0.2rem 0.2rem 0.2rem 1rem;
+    border-radius: 0.5rem;
+    background-color: rgb(58, 166, 185);
+}
+.post-title{
+    background-color: rgb(58, 166, 185);
+    color: white;
+    padding: 2rem;
+    
 }
