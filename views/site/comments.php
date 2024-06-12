@@ -7,30 +7,34 @@ use yii\widgets\LinkPager;
 use yii\helpers\Url;
 
 ?>
-<h1><?= $post->title ?></h1>
+<?php
+    $this->registerCssFile('@web/css/commentSection.css');
+?>
+<h1 class="post-title"><?= $post->title ?></h1>
 <div>
 
 <div>
-    <h3><?= Html::encode($post->image) ?></h3>
     <?php
     $webRoot = Yii::getAlias('@web');
     $filePath = $webRoot . '/' . $post->image;
     
     if (in_array($fileType, ['image/jpeg', 'image/png'])) {
-        echo Html::img($filePath, ['alt' => '', 'class' => 'your-css-class']);
+        echo Html::img($filePath, ['alt' => '', 'class' => 'image-video']);
     } else if ($fileType == 'video/mp4') {
         echo Html::tag('video', Html::tag('source', '', [
             'src' => $filePath,
             'type' => 'video/mp4',
         ]), [
             'controls' => true,
+            'class' => 'image-video'
         ]);
     } else {
         echo '<p>The uploaded file is not a supported type.</p>';
     }
     ?>
-    <p>File uploaded to: <?= Html::encode($filePath) ?></p>
+    
 </div>
+
 
 
 <?= $post->body ?>
@@ -40,21 +44,19 @@ use yii\helpers\Url;
     'method' => 'post',
 ]); ?>
 <?= $form->field($commentForm, 'post_id')->hiddenInput(['post_id' => $post_id])->label(false) ?>
-<?= $form->field($commentForm, 'body')->textarea(['rows' => 4])->label('Leave a comment:') ?>
-
-
+<?= $form->field($commentForm, 'body')->textarea(['rows' => 4])->label('<h3>Leave a comment:</h3>') ?>
 
 <div class="form-group">
     <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
 </div>
 
-    
-
     <?php ActiveForm::end(); ?>
 </div>
 
 
-<h2>Previous comments</h2>
+
+
+<h4>Previous comments</h4>
 <ul>
 <?php 
     if(count($post->comments) == 0): ?>
@@ -62,11 +64,15 @@ use yii\helpers\Url;
 
     <?php
         else:
+
         foreach ($post->comments as $commentItem): ?>
-            <h4><?= Html::encode($commentItem->createdBy->username)?><h4>
+        <div class="comment">
+            <p><?= Html::encode($commentItem->createdBy->username)?><p>
             <p><?= Html::encode($commentItem->body) ?></p>
-            <?php   endforeach;
-        endif;
+        </div>
+        <?php   endforeach;
+
+    endif;
 ?>
 </ul>
 

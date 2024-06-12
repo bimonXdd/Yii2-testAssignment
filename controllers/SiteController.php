@@ -16,6 +16,7 @@ use app\models\SignupForm;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
+use yii\bootstrap\BootstrapAsset;
 
 
 class SiteController extends Controller
@@ -106,23 +107,7 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
 
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Displays about page.
@@ -135,12 +120,13 @@ class SiteController extends Controller
     }
 
     public function actionPost(){
+
         $query = Post::find();
         $pagination = new Pagination([
             'defaultPageSize' => 6,
             'totalCount' => $query->count(),
         ]);
-        $posts = $query->orderBy('created_at')
+        $posts = $query->orderBy(['created_at' => SORT_DESC])
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all(); 

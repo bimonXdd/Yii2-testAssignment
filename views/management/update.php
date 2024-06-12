@@ -6,9 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = 'Update User: ' . $model->username;
+$this->title = 'Update User: ' . $user->username;
 $this->params['breadcrumbs'][] = ['label' => 'User Management', 'url' => ['usermanagement']];
-$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 
@@ -18,9 +17,9 @@ $this->params['breadcrumbs'][] = 'Update';
     
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?> <!-- Ensure proper password handling -->
+    <?= $form->field($updatedUser, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($updatedUser, 'email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($updatedUser, 'password')->passwordInput(['maxlength' => false]) ?> 
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

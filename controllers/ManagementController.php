@@ -1,11 +1,14 @@
 <?php
 namespace app\controllers;
 
+use app\models\updateuserForm;
 use app\models\User;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
+
 
 class ManagementController extends Controller
 {
@@ -43,27 +46,32 @@ class ManagementController extends Controller
 
         return $this->redirect(['usermanagement']);
     }
-    
+
     public function actionUpdate($id){
         $user = User::findOne($id);
+        $updatedUser = new updateuserForm();
+        $isUpdateable = in_array($id, [0]) ? true : false;
+        
         if ($user == null) {
             throw new NotFoundHttpException("The requested user does not exist.");
         }
-        else if ($user->load(Yii::$app->request->post())){
+        else if($isUpdateable){
+            throw new ForbiddenHttpException("Cant edit guest profile");
+        }
+        else if ($updatedUser->load(Yii::$app->request->post()) and $isUpdateable){
             Yii::$app->db->createCommand()->update('user', [
-                'username' => $user->username,
-                'email' => 'updatedemail@example.com',
+                'username' => $updatedUser->username,
+                'email' => $updatedUser->email,
             ], 'id = :id', [':id' => $id])->execute();
 
             Yii::$app->session->setFlash('success', 'User updated successfully.');
             return $this->redirect(['usermanagement']);
-        }
+        }else{return $this->render('update', [
+            'updatedUser' => $updatedUser,
+            'user' => $user,
+        ]);}
 
-    
-
-        return $this->render('update', [
-            'model' => $user,
-        ]);
+        
     }
 
 }

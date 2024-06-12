@@ -1,0 +1,73 @@
+/* Forum CSS */
+
+/* Reset some default styles */
+body, h1, h2, h3, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Forum title */
+h1 {
+    color: rgb(58, 166, 185);
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Post container */
+.post {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+/* Post title */
+.post-title {
+    margin-bottom: 10px;
+}
+
+.post-title a {
+    color: rgb(58, 166, 185);
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.post-title a:hover {
+    color: #444;
+}
+
+/* Post information */
+.post-info {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+/* Post body */
+.post-body {
+    color: #333;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination a {
+    color: rgb(58, 166, 185);
+    text-decoration: none;
+    font-size: 1em;
+    
+}

@@ -1,0 +1,33 @@
+/* Forum Post CSS */
+
+/* Reset some default styles */
+body, h1, h2, h3, h4, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+.image-video{
+    width: 40rem;
+}
+
+
+/* Previous comments section */
+.previous-comments {
+    margin-top: 20px;
+}
+
+/* Individual comment */
+.comment {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment p {
+    margin-bottom: 5px;
+}
+
+.comment p:last-child {
+    margin-bottom: 0;
+}
