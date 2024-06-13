@@ -27,8 +27,8 @@ class CommentForm extends Model
     public function createComment()
     {
         $comment = new Comment();
-        $user = Yii::$app->user->id;
-        if($user == null) $user = 0;
+        $user = Yii::$app->user->id;           //if no user, set user to guest
+        if($user == null) $user = 1;
         $comment->created_by = $user;
         $comment->body = $this->body;
         $comment->created_at = date('Y-m-d H:i:s');

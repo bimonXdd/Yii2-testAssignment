@@ -39,11 +39,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            Yii::$app->user->isGuest ? ['label' => 'Home', 'url' => ['/site/index']] : '',
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'blog', 'url' => ['/site/post']],
-            Yii::$app->user->getId() == 1 ? ['label' => 'Manage Users', 'url' => ['/management/usermanagement']] : '',
-            Yii::$app->user->getId() != 0 ? ['label' => 'New Post', 'url' => ['/site/newpost']] : '',
+            Yii::$app->user->getId() == 2 ? ['label' => 'Manage Users', 'url' => ['/management/usermanagement']] : '',      //user is admin
+            !Yii::$app->user->isGuest ? ['label' => 'New Post', 'url' => ['/site/newpost']] : '',                       //user is not logged in (guest user)
 
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']] 

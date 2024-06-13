@@ -7,7 +7,7 @@ use yii\helpers\Html;
 $this->registerCssFile('@web/css/commentSection.css');
 ?>
 
-<h1 class="post-title"><?= $post->title ?></h1>
+<h1 class="post-title"><?= $post->title?></h1>
 <div>
 
 <div>
@@ -70,7 +70,7 @@ $this->registerCssFile('@web/css/commentSection.css');
 
             <?php  
             //if user is anadmin
-            if(Yii::$app->user->getId() == 1):  ?>    
+            if(Yii::$app->user->getId() == 2):  ?>    
                 <?= Html::beginForm(['site/delete-comment', 'id' => $commentItem->ID], 'post', ['class' => 'delete-form']) ?>
                 <?= Html::submitButton('Delete', ['class' => 'btn btn-danger', 'data-confirm' => 'Are you sure you want to delete this comment?']) ?>
                 <?= Html::endForm();

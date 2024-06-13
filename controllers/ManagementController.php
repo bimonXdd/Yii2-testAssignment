@@ -11,12 +11,18 @@ use yii\web\ForbiddenHttpException;
 use app\models\Post;
 use app\models\Comment;
 
+//Controller for user management (PS REQUIRES TO BE LOGGED AS ADMIN)
+//methods: update, delete
 
 class ManagementController extends Controller
 {
 
+
+    
     public function actionUsermanagement(){
-        
+        if(Yii::$app->user->isGuest){
+            throw new ForbiddenHttpException('Register or log in to make a new post.');
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => User::find(),
@@ -33,6 +39,8 @@ class ManagementController extends Controller
 
         return $this->render("usermanagement",['dataProvider' =>$dataProvider]);
     }
+
+
     public function actionDelete($id){
         $user = User::findOne($id);
         if ($user === null) {
@@ -49,15 +57,14 @@ class ManagementController extends Controller
             $post->delete();
         }
 
-        if ($user->delete()) {
-            Yii::$app->session->setFlash('success', 'User deleted successfully.');
-        } else {
-            Yii::$app->session->setFlash('error', 'Failed to delete the user.');
-        }
+        if ($user->delete()) {Yii::$app->session->setFlash('success', 'User deleted successfully.');}
+         else {Yii::$app->session->setFlash('error', 'Failed to delete the user.');}
 
         return $this->redirect(['usermanagement']);
     }
 
+
+    //Query the database and rewrite the user based on the form
     public function actionUpdate($id){
         $user = User::findOne($id);
         $updatedUser = new updateuserForm();
@@ -66,7 +73,7 @@ class ManagementController extends Controller
             throw new NotFoundHttpException("The requested user does not exist.");
         }
     
-        $isUpdateable = in_array($id, [0]) ? true : false;
+        $isUpdateable = in_array($id, [1]) ? true : false;
         if ($isUpdateable) {
             throw new ForbiddenHttpException("Cannot edit guest profile.");
         }
@@ -75,6 +82,7 @@ class ManagementController extends Controller
             Yii::$app->db->createCommand()->update('user', [
                 'username' => $updatedUser->username,
                 'email' => $updatedUser->email,
+                'password' => $updatedUser->password,
             ], 'id = :id', [':id' => $id])->execute();
     
             Yii::$app->session->setFlash('success', 'User updated successfully.');

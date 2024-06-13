@@ -33,7 +33,7 @@ use yii\web\View;
 
         <?php  
         //if user is anadmin
-        if(Yii::$app->user->getId() == 1):  ?>    
+        if(Yii::$app->user->getId() == 2):  ?>    
             <?= Html::beginForm(['site/delete-post', 'id' => $post->ID], 'post', ['class' => 'delete-form']) ?>
             <?= Html::submitButton('Delete', ['class' => 'btn btn-danger', 'data-confirm' => 'Are you sure you want to delete this post?']) ?>
             <?= Html::endForm();

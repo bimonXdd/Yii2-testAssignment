@@ -89,6 +89,8 @@ a.desc:after {
 }
 
 .post-title{
-    color: green;   
+    background-color: rgb(58, 166, 185);
+    color: white;
+    padding: 2rem;   
 }
 

@@ -85,7 +85,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect('about');
         }
 
         $model->password = '';
@@ -103,6 +103,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
+
         return $this->goHome();
     }
 
@@ -117,6 +118,16 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionSignup(){
+        $SignupForm = new SignupForm();
+        if ($SignupForm->load(Yii::$app->request->post()) && $SignupForm->signup()) {
+            return $this->redirect(['login','model'=> $SignupForm]);
+        }else{
+            return $this->render('signup', ['model'=>$SignupForm]);
+        }
+    }
+
 
     public function actionPost(){
 
@@ -135,7 +146,7 @@ class SiteController extends Controller
             'pagination' => $pagination,]);
         }
 
-       
+       //handles loading all comments(AND ADDING COMMENTS) based on the post
         public function actionComments($post_id){
             $post = Post::findOne($post_id);
             $commentForm = new CommentForm($post->ID);
@@ -176,18 +187,9 @@ class SiteController extends Controller
         
             return $this->render('newpost', ['postForm' => $postForm]);
         }
-        
+    
 
 
-
-        public function actionSignup(){
-            $SignupForm = new SignupForm();
-            if ($SignupForm->load(Yii::$app->request->post()) && $SignupForm->signup()) {
-                return $this->redirect(['login','model'=> $SignupForm]);
-            }else{
-                return $this->render('signup', ['model'=>$SignupForm]);
-            }
-        }
 
         public function actionDeletePost($id)
         {
@@ -210,8 +212,10 @@ class SiteController extends Controller
             }
             return $this->redirect(Yii::$app->request->referrer);
     
-            
         }
+
+
+
         public function actionDeleteComment($id){
             $comment = Comment::findOne($id);
             if ($comment) {
